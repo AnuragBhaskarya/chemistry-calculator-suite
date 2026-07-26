@@ -47,30 +47,15 @@ streamlit run app.py
 
 ---
 
-## 🧪 Running Unit Tests
-
-To verify the mathematical accuracy of the backend calculators:
-
-```bash
-python -m unittest test_calculators.py
-```
-
----
-
 ## 📁 Repository Structure
 
 ```
 .
-├── app.py                     # Streamlit frontend & navigation router
-├── requirements.txt           # Application dependencies
-├── test_calculators.py        # Automated test suite (11 unit tests)
-├── pyrightconfig.json         # Python type checker configuration
-└── modules/                   # Backend chemistry logic
-    ├── __init__.py            # Package initialization & exports
-    ├── solutions.py           # Concentration & solution calculators
-    ├── physical.py            # Gas laws, density, & unit conversions
-    └── stoichiometry.py       # Formula parser, pH/pOH, yield, eq weight
+├── app.py                     # Streamlit web application frontend
+├── calculators.py             # All backend chemistry math & logic
+└── requirements.txt           # Application dependencies
 ```
+
 
 ---
 

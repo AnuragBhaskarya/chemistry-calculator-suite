@@ -7,24 +7,21 @@ No sidebar is used; page routing is handled via main-page button clicks.
 
 import streamlit as st
 
-# Import calculator backend logic
-from modules.solutions import (
+# Import calculator backend logic directly from calculators.py
+from calculators import (
     calculate_molarity,
     calculate_molality,
     calculate_normality,
-    calculate_dilution
-)
-from modules.physical import (
+    calculate_dilution,
     solve_gas_law,
     calculate_density,
-    convert_units
-)
-from modules.stoichiometry import (
+    convert_units,
     calculate_molar_mass,
     calculate_ph_poh,
     calculate_percent_yield,
     calculate_equivalent_weight
 )
+
 
 # Configure page to standard layout
 st.set_page_config(
