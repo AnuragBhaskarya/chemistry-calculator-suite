@@ -9,7 +9,6 @@ It is organized into 3 main sections:
 """
 
 import math
-import re
 
 # ==============================================================================
 # SECTION 1: SOLUTIONS & CONCENTRATION CALCULATORS
@@ -243,84 +242,7 @@ def convert_units(value, category, from_unit, to_unit):
 # SECTION 3: STOICHIOMETRY & ANALYTICAL CHEMISTRY
 # ==============================================================================
 
-# Standard atomic weights dictionary
-ATOMIC_MASSES = {
-    "H": 1.008, "He": 4.0026, "Li": 6.94, "Be": 9.0122, "B": 10.81, "C": 12.011,
-    "N": 14.007, "O": 15.999, "F": 18.998, "Ne": 20.180, "Na": 22.990, "Mg": 24.305,
-    "Al": 26.982, "Si": 28.085, "P": 30.974, "S": 32.06, "Cl": 35.45, "Ar": 39.948,
-    "K": 39.098, "Ca": 40.078, "Fe": 55.845, "Cu": 63.546, "Zn": 65.38, "Ag": 107.87,
-    "I": 126.90, "Ba": 137.33, "Au": 196.97, "Pb": 207.2, "U": 238.03
-}
 
-
-def parse_chemical_formula(formula):
-    """
-    Parses chemical formulas like H2O, Ca(OH)2, or (NH4)2SO4 into atom counts.
-    Example: 'Ca(OH)2' -> {'Ca': 1, 'O': 2, 'H': 2}
-    """
-    formula = formula.strip().replace(" ", "")
-    if not formula:
-        raise ValueError("Formula string cannot be empty.")
-    if formula.count('(') != formula.count(')'):
-        raise ValueError("Mismatched parentheses in formula.")
-    
-    tokens = re.findall(r'([A-Z][a-z]*|\(|\)|\d+)', formula)
-    if sum(len(t) for t in tokens) != len(formula):
-        raise ValueError("Invalid characters in formula or elements must start with Capital letters.")
-
-    stack = [{}]
-    i = 0
-    while i < len(tokens):
-        token = tokens[i]
-        if token == '(':
-            stack.append({})
-            i += 1
-        elif token == ')':
-            multiplier = 1
-            if i + 1 < len(tokens) and tokens[i + 1].isdigit():
-                multiplier = int(tokens[i + 1])
-                i += 2
-            else:
-                i += 1
-            group = stack.pop()
-            for elem, count in group.items():
-                stack[-1][elem] = stack[-1].get(elem, 0) + count * multiplier
-        elif token.isdigit():
-            raise ValueError(f"Syntax error: unexpected number '{token}'")
-        else:
-            elem = token
-            if elem not in ATOMIC_MASSES:
-                raise ValueError(f"Unknown element: '{elem}'")
-            multiplier = 1
-            if i + 1 < len(tokens) and tokens[i + 1].isdigit():
-                multiplier = int(tokens[i + 1])
-                i += 2
-            else:
-                i += 1
-            stack[-1][elem] = stack[-1].get(elem, 0) + multiplier
-
-    return stack[0]
-
-
-def calculate_molar_mass(formula):
-    """Calculates Molar Mass of a formula in g/mol."""
-    atom_counts = parse_chemical_formula(formula)
-    total_mass = 0.0
-    steps = []
-    
-    for elem, count in sorted(atom_counts.items()):
-        mass = ATOMIC_MASSES[elem]
-        subtotal = count * mass
-        total_mass += subtotal
-        steps.append(f"{elem}: {count} × {mass} g/mol = {subtotal:.4f} g/mol")
-        
-    steps.append(f"Total Molar Mass = {total_mass:.4f} g/mol")
-    
-    return {
-        "result": total_mass,
-        "element_counts": atom_counts,
-        "steps": steps
-    }
 
 
 def calculate_ph_poh(value, input_type):

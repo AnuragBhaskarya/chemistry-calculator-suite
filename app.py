@@ -16,7 +16,6 @@ from calculators import (
     solve_gas_law,
     calculate_density,
     convert_units,
-    calculate_molar_mass,
     calculate_ph_poh,
     calculate_percent_yield,
     calculate_equivalent_weight
@@ -88,9 +87,6 @@ if st.session_state.page == "Home":
             
     with col3:
         st.subheader("Stoichiometry")
-        if st.button("Molar Mass Parser", use_container_width=True):
-            st.session_state.page = "Molar Mass"
-            st.rerun()
         if st.button("pH & pOH Solver", use_container_width=True):
             st.session_state.page = "pH pOH"
             st.rerun()
@@ -260,23 +256,6 @@ elif st.session_state.page == "Converter":
         except Exception as e:
             st.error(e)
 
-# --- Page: Molar Mass ---
-elif st.session_state.page == "Molar Mass":
-    back_button()
-    st.title("Molar Mass Calculator")
-    st.write("Enter chemical formulas and compute molecular weights automatically.")
-    st.latex(r"\text{Molar Mass} = \sum (\text{Atom Count} \times \text{Atomic Weight})")
-    
-    formula = st.text_input("Enter Chemical Formula (e.g., H2O, Ca(OH)2, (NH4)2SO4):", value="C6H12O6")
-    
-    if st.button("Calculate Molar Mass", type="primary"):
-        try:
-            res = calculate_molar_mass(formula)
-            st.success(f"Molar Mass = {res['result']:.4f} g/mol")
-            display_steps(res['steps'])
-        except Exception as e:
-            st.error(f"Error: {e}")
-
 # --- Page: pH pOH ---
 elif st.session_state.page == "pH pOH":
     back_button()
@@ -324,18 +303,7 @@ elif st.session_state.page == "Equivalent Weight":
     st.title("Equivalent Weight Calculator")
     st.latex(r"\text{Equivalent Weight} = \frac{\text{Molar Mass}}{\text{n-factor}}")
     
-    use_formula = st.checkbox("Calculate Molar Mass automatically from chemical formula", value=True)
-    if use_formula:
-        eq_formula = st.text_input("Enter Chemical Formula:", value="H2SO4")
-        try:
-            mass_calc = calculate_molar_mass(eq_formula)
-            molar_mass_val = mass_calc['result']
-            st.write(f"Molar Mass of {eq_formula} = **{molar_mass_val:.4f} g/mol**")
-        except Exception as e:
-            molar_mass_val = 98.079
-            st.warning("Enter a valid formula above.")
-    else:
-        molar_mass_val = st.number_input("Input Molar Mass manually (g/mol):", min_value=0.01, value=98.079)
+    molar_mass_val = st.number_input("Input Molar Mass (g/mol):", min_value=0.01, value=98.079, step=0.1)
         
     n_factor = st.number_input("n-factor (valency, acidity, basicity):", min_value=0.1, value=2.0)
     

@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 .vscode/
 .DS_Store
+
+# Slides & Presentation files
+*.pptx
+*.odp
+slides.html
+build_html_ppt.py
+slide_*.png
